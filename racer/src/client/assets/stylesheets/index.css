@@ -21,7 +21,7 @@ body {
 }
 
 header {
-  background-image: url('https://via.placeholder.com/1150');
+  background-image: url('https://cdn.mos.cms.futurecdn.net/PZxivc49eWes8DQtpnnW7d-970-80.jpg.webp');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -33,6 +33,7 @@ header {
 
 h1 {
   color: white;
+  background-color: black;
   text-shadow: 3px 2px hsl(0, 2%, 51%);
   font-size: 70px;
   text-transform: uppercase;

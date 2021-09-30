@@ -78,7 +78,8 @@ async function handleCreateRace() {
 	renderAt('#race', renderRaceStartView())
 
 	// TODO - Get player_id and track_id from the store
-	
+
+
 	// const race = TODO - invoke the API call to create the race, then save the result
 
 	// TODO - update the store with the race id
@@ -174,10 +175,28 @@ function handleAccelerate() {
 function renderRacerCars(racers) {
 	if (!racers.length) {
 		return `
-			<h4>Loading Racers...</4>
+			  <button type="button" class="card m-3">
+				<img src="https://mario.wiki.gallery/images/thumb/3/39/Mario_MK64.png/800px-Mario_MK64.png" 
+				class="card-img-top" alt="mario">
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://mario.wiki.gallery/images/thumb/5/53/MK64_Luigi.png/800px-MK64_Luigi.png"
+				 class="card-img-top" alt="luigi">
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://mario.wiki.gallery/images/7/7b/MK64_Peach.png"
+				 class="card-img-top" alt="peach">
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://mario.wiki.gallery/images/thumb/1/13/MK64_Yoshi.png/800px-MK64_Yoshi.png"
+				 class="card-img-top" alt="yoshi">
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://mario.wiki.gallery/images/thumb/8/8b/MK64_DK.png/800px-MK64_DK.png"
+				 class="card-img-top" alt="dk">
+			  </button>
 		`
 	}
-
 	const results = racers.map(renderRacerCard).join('')
 
 	return `
@@ -203,7 +222,31 @@ function renderRacerCard(racer) {
 function renderTrackCards(tracks) {
 	if (!tracks.length) {
 		return `
-			<h4>Loading Tracks...</4>
+			  <button type="button" class="card m-3">
+				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-toads-turnpike.jpg" 
+				class="card-img-top" alt="luigi raceway">
+				<h5>Slow cars</h5>
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-mario-raceway-1.jpg"
+				 class="card-img-top" alt="mario raceway">
+				 <h5>Mario</h5>
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-kalimari-desert.jpg"
+				 class="card-img-top" alt="desert">
+				 <h5>The wild west</h5>
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-yoshi-valley.jpg"
+				 class="card-img-top" alt="yoshi valley">
+				 <h5>Big egg</h5>
+			  </button>
+			  <button type="button" class="card m-3">
+				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-dk-jungle-parkway.jpg"
+				 class="card-img-top" alt="dk parkway">
+				 <h5>Brazil</h5>
+			  </button>
 		`
 	}
 
@@ -321,10 +364,22 @@ function defaultFetchOpts() {
 
 function getTracks() {
 	// GET request to `${SERVER}/api/tracks`
+	return fetch (`$(SERVER)/api/tracks`, {
+				method: "GET",
+				...defaultFetchOpts()
+	})
+	.then(results => results.json)
+		.catch(err => console.log("Problem with request:", err))
 }
 
 function getRacers() {
 	// GET request to `${SERVER}/api/cars`
+	return fetch (`$(SERVER)/api/cars`, {
+		method: "GET",
+		...defaultFetchOpts()
+	})
+		.then(results => results.json)
+		.catch(err => console.log("Problem with request:", err))
 }
 
 function createRace(player_id, track_id) {

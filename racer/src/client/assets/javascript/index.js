@@ -1,18 +1,38 @@
 // PROVIDED CODE BELOW (LINES 1 - 80) DO NOT REMOVE
 
 // The store will hold all information needed globally
-var store = {
+let store = {
 	track_id: undefined,
 	player_id: undefined,
 	race_id: undefined,
 }
 
+let KartRacers = {
+	// map default racer names to custom racer names
+	"Racer 1": "Mario",
+	"Racer 2": "Luigi",
+	"Racer 3": "Peach",
+	"Racer 4": "Yoshi",
+	"Racer 5": "Wario",
+}
+
 // We need our javascript to wait until the DOM is loaded
 document.addEventListener("DOMContentLoaded", function() {
+	// these two methods called when DOM is loaded
 	onPageLoad()
 	setupClickHandlers()
 })
 
+/** onPageLoad() **/
+/* called when DOM is loaded
+ * calls:
+ *   1. renderTrackCards
+ *   2. renderRacerCars
+ *   3. renderAt
+ *   4. getTracks
+ * INPUT: none
+ * OUTPUT: renders new html
+ */
 async function onPageLoad() {
 	try {
 		getTracks()
@@ -79,7 +99,6 @@ async function handleCreateRace() {
 
 	// TODO - Get player_id and track_id from the store
 
-
 	// const race = TODO - invoke the API call to create the race, then save the result
 
 	// TODO - update the store with the race id
@@ -141,11 +160,12 @@ function handleSelectPodRacer(target) {
 	if(selected) {
 		selected.classList.remove('selected')
 	}
-
 	// add class selected to current target
 	target.classList.add('selected')
 
 	// TODO - save the selected racer to the store
+	store.player_id = target.id;
+	console.log(store.player_id);
 }
 
 function handleSelectTrack(target) {
@@ -175,33 +195,15 @@ function handleAccelerate() {
 function renderRacerCars(racers) {
 	if (!racers.length) {
 		return `
-			  <button type="button" class="card m-3">
-				<img src="https://mario.wiki.gallery/images/thumb/3/39/Mario_MK64.png/800px-Mario_MK64.png" 
-				class="card-img-top" alt="mario">
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://mario.wiki.gallery/images/thumb/5/53/MK64_Luigi.png/800px-MK64_Luigi.png"
-				 class="card-img-top" alt="luigi">
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://mario.wiki.gallery/images/7/7b/MK64_Peach.png"
-				 class="card-img-top" alt="peach">
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://mario.wiki.gallery/images/thumb/1/13/MK64_Yoshi.png/800px-MK64_Yoshi.png"
-				 class="card-img-top" alt="yoshi">
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://mario.wiki.gallery/images/thumb/8/8b/MK64_DK.png/800px-MK64_DK.png"
-				 class="card-img-top" alt="dk">
-			  </button>
+			<h4>Loading Racers...</h4>
 		`
 	}
+
 	const results = racers.map(renderRacerCard).join('')
 
 	return `
 		<ul id="racers">
-			${reuslts}
+			${results}
 		</ul>
 	`
 }
@@ -211,7 +213,8 @@ function renderRacerCard(racer) {
 
 	return `
 		<li class="card podracer" id="${id}">
-			<h3>${driver_name}</h3>
+			<img src="../images/kart${1}.png" alt="${KartRacers[driver_name]}">
+			<h3>${KartRacers[driver_name]}</h3>
 			<p>${top_speed}</p>
 			<p>${acceleration}</p>
 			<p>${handling}</p>
@@ -222,31 +225,7 @@ function renderRacerCard(racer) {
 function renderTrackCards(tracks) {
 	if (!tracks.length) {
 		return `
-			  <button type="button" class="card m-3">
-				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-toads-turnpike.jpg" 
-				class="card-img-top" alt="luigi raceway">
-				<h5>Slow cars</h5>
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-mario-raceway-1.jpg"
-				 class="card-img-top" alt="mario raceway">
-				 <h5>Mario</h5>
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-kalimari-desert.jpg"
-				 class="card-img-top" alt="desert">
-				 <h5>The wild west</h5>
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-yoshi-valley.jpg"
-				 class="card-img-top" alt="yoshi valley">
-				 <h5>Big egg</h5>
-			  </button>
-			  <button type="button" class="card m-3">
-				<img src="https://n64today.com/wp-content/uploads/2017/11/mario-kart-64-dk-jungle-parkway.jpg"
-				 class="card-img-top" alt="dk parkway">
-				 <h5>Brazil</h5>
-			  </button>
+			<h4>Loading Tracks...</h4>
 		`
 	}
 
@@ -360,25 +339,48 @@ function defaultFetchOpts() {
 	}
 }
 
-// TODO - Make a fetch call (with error handling!) to each of the following API endpoints 
-
+/** getTracks - a fetch call (with error handling!) to each of the following API endpoints **/
+/* called by onPageLoad
+ * calls fetch for a GET request to server for tracks and calls defaultFetchOpts()
+ * INPUT: none
+ * OUTPUT:
+ * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+ *   1. on success: returns json from results with .json()
+ *   2. on failure: error message
+ */
 function getTracks() {
 	// GET request to `${SERVER}/api/tracks`
 	return fetch (`$(SERVER)/api/tracks`, {
 				method: "GET",
+		        // add default headers and such from defaultFetchOpts()
 				...defaultFetchOpts()
 	})
-	.then(results => results.json)
-		.catch(err => console.log("Problem with request:", err))
+	.then(results => {
+		console.log(results)
+		return results.json()
+	})
+	.catch(err => console.log("Problem with request:", err))
 }
 
+/** getRacers - a fetch call (with error handling!) to each of the following API endpoints **/
+/* called by onPageLoad
+ * calls fetch for a GET request to server for tracks and calls defaultFetchOpts()
+ * INPUT: none
+ * OUTPUT:
+ * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+ *   1. on success: returns json from results with .json()
+ *   2. on failure: error message
+ */
 function getRacers() {
 	// GET request to `${SERVER}/api/cars`
 	return fetch (`$(SERVER)/api/cars`, {
 		method: "GET",
 		...defaultFetchOpts()
 	})
-		.then(results => results.json)
+		.then(results => {
+		 console.log(results)
+		 return results.json()
+		})
 		.catch(err => console.log("Problem with request:", err))
 }
 

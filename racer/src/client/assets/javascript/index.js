@@ -7,6 +7,15 @@ let store = {
 	race_id: undefined,
 }
 
+let RaceTracks = {
+	"Track 1": "Rainbow Road",
+	"Track 2": "Luigi Raceway",
+	"Track 3": "Koopa Troopa Beach",
+	"Track 4": "Kalimari Desert",
+	"Track 5": "Yoshi Valley",
+	"Track 6": "DK's Jungle Parkway",
+}
+
 let KartRacers = {
 	// map default racer names to custom racer names
 	"Racer 1": "Mario",
@@ -213,11 +222,11 @@ function renderRacerCard(racer) {
 
 	return `
 		<li class="card podracer" id="${id}">
-			<img src="../images/kart${1}.png" alt="${KartRacers[driver_name]}">
+			<img src="../assets/images/kart${id}.png" alt="${KartRacers[driver_name]}"/>
 			<h3>${KartRacers[driver_name]}</h3>
-			<p>${top_speed}</p>
-			<p>${acceleration}</p>
-			<p>${handling}</p>
+			<p>Top Speed: ${top_speed}</p>
+			<p>Acceleration: ${acceleration}</p>
+			<p>Handling: ${handling}</p>
 		</li>
 	`
 }
@@ -243,7 +252,8 @@ function renderTrackCard(track) {
 
 	return `
 		<li id="${id}" class="card track">
-			<h3>${name}</h3>
+			<img src="../assets/images/track${id}.png"/>
+			<h3>${RaceTracks[name]}</h3>
 		</li>
 	`
 }
@@ -350,7 +360,7 @@ function defaultFetchOpts() {
  */
 function getTracks() {
 	// GET request to `${SERVER}/api/tracks`
-	return fetch (`$(SERVER)/api/tracks`, {
+	return fetch (`${SERVER}/api/tracks`, {
 				method: "GET",
 		        // add default headers and such from defaultFetchOpts()
 				...defaultFetchOpts()
@@ -373,13 +383,13 @@ function getTracks() {
  */
 function getRacers() {
 	// GET request to `${SERVER}/api/cars`
-	return fetch (`$(SERVER)/api/cars`, {
+	return fetch (`${SERVER}/api/cars`, {
 		method: "GET",
 		...defaultFetchOpts()
 	})
 		.then(results => {
-		 console.log(results)
-		 return results.json()
+			console.log(results)
+			return results.json()
 		})
 		.catch(err => console.log("Problem with request:", err))
 }

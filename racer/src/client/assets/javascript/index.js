@@ -1,13 +1,13 @@
 // PROVIDED CODE BELOW (LINES 1 - 80) DO NOT REMOVE
 
 // The store will hold all information needed globally
-let store = {
+const store = {
 	track_id: undefined,
 	player_id: undefined,
 	race_id: undefined,
 }
 
-let RaceTracks = {
+const RaceTracks = {
 	"Track 1": "Rainbow Road",
 	"Track 2": "Luigi Raceway",
 	"Track 3": "Koopa Troopa Beach",
@@ -16,7 +16,7 @@ let RaceTracks = {
 	"Track 6": "DK's Jungle Parkway",
 }
 
-let KartRacers = {
+const KartRacers = {
 	// map default racer names to custom racer names
 	"Racer 1": "Mario",
 	"Racer 2": "Luigi",
@@ -328,10 +328,10 @@ function resultsView(positions) {
 function raceProgress(positions) {
 	//console.log(`positions: ${positions}`);
 	//console.log(`player id: ${store.player_id}`);
-	let id = store.player_id;
+	const id = store.player_id;
 	//console.log(`array: ${positions[id].driver_name}`);
 
-	let userPlayer = positions[id];
+	const userPlayer = positions[id];
 	userPlayer.driver_name += " (you)"
 
 	positions = positions.sort((a, b) => (a.segment > b.segment) ? -1 : 1)
